@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💖</title>
+
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(120deg, #ffdde1, #ee9ca7);
+    font-family: "Segoe UI", sans-serif;
+    transition: background 1s ease;
+  }
+
+  .container {
+    text-align: center;
+    background: rgba(255,255,255,0.92);
+    padding: 40px 50px;
+    border-radius: 22px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    z-index: 2;
+    max-width: 520px;
+    width: 100%;
+  }
+
+  h1, h2 { margin-bottom: 18px; }
+
+  p {
+    margin: 10px 0;
+  }
+
+  button {
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    margin: 10px;
+    transition: transform 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+  }
+
+  #yesBtn {
+    padding: 18px 45px;
+    font-size: 22px;
+    background: #ff4d6d;
+    color: white;
+  }
+
+  #noBtn {
+    padding: 10px 22px;
+    font-size: 14px;
+    background: #bbb;
+  }
+
+  .secondaryBtn {
+    padding: 14px 32px;
+    font-size: 16px;
+    background: #ff758f;
+    color: white;
+  }
+
+  .rejectBtn {
+    padding: 12px 26px;
+    font-size: 14px;
+    background: #ccc;
+  }
+
+  .finalText {
+    color: white;
+    text-shadow: 0 3px 12px rgba(0,0,0,0.6);
+  }
+
+  .float {
+    position: absolute;
+    bottom: -30px;
+    animation: rise 6s linear infinite;
+    opacity: 0.85;
+  }
+
+  @keyframes rise {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-120vh); opacity: 0; }
+  }
+
+  /* 📱 Mobile tuning */
+  @media (max-width: 600px) {
+
+    body {
+      padding: 16px;
+    }
+
+    .container {
+      padding: 28px 22px;
+      border-radius: 18px;
+      max-width: 92%;
+    }
+
+    h1 {
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    button {
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    #yesBtn {
+      font-size: 20px;
+      padding: 16px 0;
+    }
+
+    #noBtn {
+      font-size: 14px;
+      padding: 12px 0;
+    }
+
+    .secondaryBtn {
+      font-size: 16px;
+      padding: 14px 0;
+    }
+
+    .rejectBtn {
+      font-size: 14px;
+      padding: 12px 0;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Celebration sound -->
+<audio id="celebrateSound">
+  <!-- replace filename later -->
+  <source src="woohoo.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container" id="card">
+  <h1 id="question"></h1>
+  <button id="yesBtn">YES 💕</button>
+  <button id="noBtn">No 🙄</button>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const herName = params.get("name") || "My Love";
+
+  const card = document.getElementById("card");
+  const question = document.getElementById("question");
+  const sound = document.getElementById("celebrateSound");
+
+  question.innerText = `Will you be my Valentine, ${herName}? 💘`;
+
+  document.getElementById("yesBtn").onclick = () => showYes(false);
+  document.getElementById("noBtn").onclick = showAreYouSure;
+
+  function showAreYouSure() {
+    card.innerHTML = `
+      <h2>Are you sure? 🤨</h2>
+      <button class="secondaryBtn" id="sureYes">
+        Yes, I’ll be your Valentine ❤️
+      </button>
+      <button class="rejectBtn" id="sureNo">
+        No, I won’t 😤
+      </button>
+    `;
+
+    document.getElementById("sureYes").onclick = () => showYes(true);
+    document.getElementById("sureNo").onclick = showForced;
+  }
+
+  function showYes(fromNo) {
+    document.body.style.background =
+      "url('yes_bg.jpg') center/cover no-repeat";
+
+    card.classList.add("finalText");
+
+    card.innerHTML = `
+      <h1>Congratulations 🎉</h1>
+      <p>Thank you for being my Valentine 💖</p>
+      ${fromNo ? "<p><strong>Good girl 😌</strong></p>" : ""}
+      <p>Woohoo!! 🥳</p>
+    `;
+
+    sound.play();
+    startFloat("💖");
+  }
+
+  function showForced() {
+    document.body.style.background =
+      "url('no_bg.jpg') center/cover no-repeat";
+
+    card.classList.add("finalText");
+
+    card.innerHTML = `
+      <h1>Sorry 😌</h1>
+      <p>You don’t have any option madam.</p>
+      <p>Decision already taken 😏</p>
+      <br>
+      <button class="secondaryBtn" id="finalAccept">
+        Ok fine… I’ll be your Valentine ❤️
+      </button>
+    `;
+
+    startFloat("😄");
+
+    document.getElementById("finalAccept").onclick = () => {
+      showYes(true);
+    };
+  }
+
+  function startFloat(symbol) {
+    setInterval(() => {
+      const e = document.createElement("div");
+      e.className = "float";
+      e.innerText = symbol;
+      e.style.left = Math.random() * 100 + "vw";
+      e.style.fontSize = Math.random() * 25 + 20 + "px";
+      e.style.animationDuration = Math.random() * 3 + 4 + "s";
+      document.body.appendChild(e);
+      setTimeout(() => e.remove(), 7000);
+    }, 300);
+  }
+</script>
+
+</body>
+</html>
