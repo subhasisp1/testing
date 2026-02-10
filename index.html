@@ -8,6 +8,21 @@
 <style>
   * { box-sizing: border-box; }
 
+  .intro-img {
+  width: 100%;
+  max-width: 260px;
+  border-radius: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+  }
+
+  @media (max-width: 600px) {
+    .intro-img {
+    max-width: 220px;
+    margin-bottom: 14px;
+    }
+  }
+
   body {
     margin: 0;
     height: 100vh;
@@ -156,10 +171,12 @@
 </audio>
 
 <div class="container" id="card">
+  <img src="intro_photo.jpg" alt="Us 💖" class="intro-img">
   <h1 id="question"></h1>
   <button id="yesBtn">YES 💕</button>
   <button id="noBtn">No 🙄</button>
 </div>
+
 
 <script>
   const params = new URLSearchParams(window.location.search);
