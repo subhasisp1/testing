@@ -28,24 +28,28 @@
     margin: 0;
     height: 100vh;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background: linear-gradient(120deg, #ffdde1, #ee9ca7);
     font-family: "Segoe UI", sans-serif;
     transition: background 1s ease;
+    position: relative;
   }
 
-  .container {
-    text-align: center;
-    background: rgba(255,255,255,0.92);
-    padding: 40px 50px;
-    border-radius: 22px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-    z-index: 2;
-    max-width: 520px;
-    width: 100%;
-  }
+ .container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(255,255,255,0.92);
+  padding: 40px 50px;
+  border-radius: 22px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+  z-index: 2;
+  max-width: 520px;
+  width: 90%;
+  cursor: grab;
+  touch-action: none;
+}
 
   h1, h2 { margin-bottom: 18px; }
 
@@ -268,10 +272,55 @@
       setTimeout(() => e.remove(), 7000);
     }, 300);
   }
+ // Make card draggable (mouse + touch)
+
+let isDragging = false;
+let offsetX, offsetY;
+
+card.addEventListener("mousedown", startDrag);
+card.addEventListener("touchstart", startDrag);
+
+function startDrag(e) {
+  isDragging = true;
+  card.style.cursor = "grabbing";
+
+  const rect = card.getBoundingClientRect();
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+  offsetX = clientX - rect.left;
+  offsetY = clientY - rect.top;
+
+  document.addEventListener("mousemove", drag);
+  document.addEventListener("touchmove", drag);
+  document.addEventListener("mouseup", stopDrag);
+  document.addEventListener("touchend", stopDrag);
+}
+
+function drag(e) {
+  if (!isDragging) return;
+
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+  card.style.left = clientX - offsetX + "px";
+  card.style.top = clientY - offsetY + "px";
+  card.style.transform = "none";
+}
+
+function stopDrag() {
+  isDragging = false;
+  card.style.cursor = "grab";
+
+  document.removeEventListener("mousemove", drag);
+  document.removeEventListener("touchmove", drag);
+}
+
 </script>
 
 </body>
 </html>
+
 
 
 
