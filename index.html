@@ -192,24 +192,24 @@
   document.getElementById("yesBtn").onclick = () => showYes(false);
   document.getElementById("noBtn").onclick = showAreYouSure;
 
- function showAreYouSure() {
-  card.innerHTML = `
-    <img src="are_you_sure.jpg" alt="Are you sure? 💕" class="intro-img">
-
-    <h2> Kn? Satre ?Are you sure? 🤨</h2>
-
-    <button class="secondaryBtn" id="sureYes">
-      Yes, I’ll be your Valentine ❤️
-    </button>
-
-    <button class="rejectBtn" id="sureNo">
-      Han Satre, hebara nahi mate tama valentine 😤
-    </button>
-  `;
-
-  document.getElementById("sureYes").onclick = () => showYes(true);
-  document.getElementById("sureNo").onclick = showForced;
-}
+   function showAreYouSure() {
+    card.innerHTML = `
+      <img src="are_you_sure.jpg" alt="Are you sure? 💕" class="intro-img">
+  
+      <h2> Kn? Satre ?Are you sure? 🤨</h2>
+  
+      <button class="secondaryBtn" id="sureYes">
+        Yes, I’ll be your Valentine ❤️
+      </button>
+  
+      <button class="rejectBtn" id="sureNo">
+        Han Satre, hebara nahi mate tama valentine 😤
+      </button>
+    `;
+  
+    document.getElementById("sureYes").onclick = () => showYes(true);
+    document.getElementById("sureNo").onclick = showForced;
+  }
 
 
   function showYes(fromNo) {
@@ -268,6 +268,7 @@
 
 </body>
 </html>
+
 
 
 
