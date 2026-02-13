@@ -303,10 +303,21 @@ function drag(e) {
   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
   const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-  card.style.left = clientX - offsetX + "px";
-  card.style.top = clientY - offsetY + "px";
+  let newLeft = clientX - offsetX;
+  let newTop = clientY - offsetY;
+
+  const maxLeft = window.innerWidth - card.offsetWidth;
+  const maxTop = window.innerHeight - card.offsetHeight;
+
+  // Clamp inside screen
+  newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+  newTop = Math.max(0, Math.min(newTop, maxTop));
+
+  card.style.left = newLeft + "px";
+  card.style.top = newTop + "px";
   card.style.transform = "none";
 }
+
 
 function stopDrag() {
   isDragging = false;
@@ -314,12 +325,15 @@ function stopDrag() {
 
   document.removeEventListener("mousemove", drag);
   document.removeEventListener("touchmove", drag);
+  document.removeEventListener("mouseup", stopDrag);
+  document.removeEventListener("touchend", stopDrag);
 }
 
 </script>
 
 </body>
 </html>
+
 
 
 
